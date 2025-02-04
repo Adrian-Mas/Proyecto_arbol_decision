@@ -1,4 +1,8 @@
-from utils import db_connect
-engine = db_connect()
+from flask import Flask, request, render_template
+from pickle import load 
 
-# your code here
+app = Flask(__name__)
+
+model = load(open(/workspaces/Proyecto_arbol_decision/src/decision_tree_clasiffier_diabetes), "rb")
+
+
