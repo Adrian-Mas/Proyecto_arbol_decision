@@ -3,11 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi App Flask en Render</title>
+    <title>Prediciendo la Diabetes</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>¡Hola desde Flask en Render!</h1>
-    <p>Esta es una página de ejemplo desplegada en Render.</p>
+    <h1>Prediciendo la Diabetes</h1>
+    
+    {% if result %}
+        <h2>Resultado de la predicción: {{ result }}</h2>
+    {% else %}
+        <h2>Introduce los datos para realizar una predicción</h2>
+    {% endif %}
+    
+    <!-- Aquí podrías añadir un formulario para que el usuario ingrese los datos -->
+    <form method="post">
+        <label>Pregnancies:</label>
+        <input type="text" name="Pregnancies"><br>
+        <label>Glucose:</label>
+        <input type="text" name="Glucose"><br>
+        <label>BloodPressure:</label>
+        <input type="text" name="BloodPressure"><br>
+        <label>SkinThickness:</label>
+        <input type="text" name="SkinThickness"><br>
+        <label>Insulin:</label>
+        <input type="text" name="Insulin"><br>
+        <label>BMI:</label>
+        <input type="text" name="BMI"><br>
+        <label>DiabetesPedigreeFunction:</label>
+        <input type="text" name="DiabetesPedigreeFunction"><br>
+        <label>Age:</label>
+        <input type="text" name="Age"><br>
+        <input type="submit" value="Predecir">
+    </form>
 </body>
 </html>
