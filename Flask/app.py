@@ -19,6 +19,7 @@ def index():
             pregnancies = float(request.form["Pregnancies"])
             glucose = float(request.form["Glucose"])
             blood_pressure = float(request.form["BloodPressure"])
+            skin_thickness = float(request.form["SkinThickness"])
             insulin = float(request.form["Insulin"])
             bmi = float(request.form["BMI"])
             dpf = float(request.form["DiabetesPedigreeFunction"])
@@ -47,6 +48,7 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
