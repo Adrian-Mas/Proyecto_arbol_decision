@@ -5,7 +5,7 @@ import pickle
 app = Flask(__name__)
 
 # Cargar el modelo entrenado
-with open("decision_tree_regressor_diabetes", "rb") as f:
+with open("decision_tree_clasiffier_diabetes", "rb") as f:
     model = pickle.load(f)
 
 @app.route("/", methods=["GET", "POST"])
