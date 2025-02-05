@@ -1,48 +1,48 @@
-from flask import Flask, render_template, request
+import streamlit as st
 import pandas as pd
 import pickle
 
-app = Flask(__name__)
-
-# Cargar el modelo entrenado
+# Cargar el modelo entrenado (asegúrate de que el archivo esté en la misma carpeta)
 with open("decision_tree_clasiffier_diabetes", "rb") as f:
     model = pickle.load(f)
 
-@app.route("/", methods=["GET", "POST"])
-def index():
-    result = None
-    if request.method == "POST":
-        # Ejemplo: Recoger datos del formulario
-        # Aquí se supone que tienes un formulario en el template que envía estos datos.
-        try:
-            # Se recogen los datos y se convierten a float
-            pregnancies = float(request.form["Pregnancies"])
-            glucose = float(request.form["Glucose"])
-            blood_pressure = float(request.form["BloodPressure"])
-            insulin = float(request.form["Insulin"])
-            bmi = float(request.form["BMI"])
-            dpf = float(request.form["DiabetesPedigreeFunction"])
-            age = float(request.form["Age"])
+# Título de la aplicación
+st.title("Prediciendo la Diabetes")
 
-            # Crear un DataFrame con los datos de entrada (como un solo registro)
-            input_data = pd.DataFrame({
-                "Pregnancies": [pregnancies],
-                "Glucose": [glucose],
-                "BloodPressure": [blood_pressure],
-                "Insulin": [insulin],
-                "BMI": [bmi],
-                "DiabetesPedigreeFunction": [dpf],
-                "Age": [age]
-            })
+st.write("Introduce los siguientes datos:")
 
-            # Realizar la predicción
-            prediction = model.predict(input_data)[0]
-            result = "Positivo" if prediction == 1 else "Negativo"
-        except Exception as e:
-            result = f"Error en los datos: {e}"
+# Usaremos un formulario para organizar los inputs
+with st.form(key="prediction_form"):
+    pregnancies = st.number_input("Pregnancies", min_value=0, value=0)
+    glucose = st.number_input("Glucose", min_value=0, value=0)
+    blood_pressure = st.number_input("BloodPressure", min_value=0, value=0)
+    insulin = st.number_input("Insulin", min_value=0, value=0)
+    bmi = st.number_input("BMI", min_value=0.0, value=0.0, format="%.2f")
+    dpf = st.number_input("DiabetesPedigreeFunction", min_value=0.0, value=0.0, format="%.2f")
+    age = st.number_input("Age", min_value=0, value=0)
     
-    # En la vista, mostramos el resultado (si existe) y la vista previa del DataFrame, etc.
-    return render_template("index.html", result=result)
+    # Botón para enviar el formulario
+    submit_button = st.form_submit_button(label="Predecir")
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# Si el usuario envía el formulario, se realiza la predicción
+if submit_button:
+    # Crear un DataFrame con los datos de entrada (una sola fila)
+    input_data = pd.DataFrame({
+        "Pregnancies": [pregnancies],
+        "Glucose": [glucose],
+        "BloodPressure": [blood_pressure],
+        "Insulin": [insulin],
+        "BMI": [bmi],
+        "DiabetesPedigreeFunction": [dpf],
+        "Age": [age]
+    })
+    
+    try:
+        # Realizar la predicción
+        prediction = model.predict(input_data)[0]
+        result = "Positivo" if prediction == 1 else "Negativo"
+    except Exception as e:
+        result = f"Error en los datos: {e}"
+    
+    # Mostrar el resultado en la interfaz de Streamlit
+    st.write("Resultado de la predicción:", result)
